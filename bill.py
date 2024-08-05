@@ -4,7 +4,7 @@ from typing import List
 import flet as ft
 
 
-class Bill:
+class Transaction:
     def __init__(self, is_income: bool, type_: str, amount: float, create_time: datetime):
         self.is_income = is_income
         self.type_ = type_
@@ -24,7 +24,7 @@ class Bill:
 def main(page: ft.Page):
     page.title = "Bill"
 
-    def add_bill(e):
+    def add_transaction(e):
         income_types = ['Salary', 'Bonus', 'Interest', 'Stock', 'Rent']
         disburse_types = ['Rent']
 
@@ -63,16 +63,16 @@ def main(page: ft.Page):
         def confirm(e):
             page.close(dialog)
             try:
-                new_bill = Bill(
+                new_transaction = Transaction(
                     is_income=is_income,
                     type_=type_dropdown.value,
                     amount=float(amount.value),
                     create_time=datetime.datetime.now()
                 )
 
-                bills.append(new_bill)
-                bill_rows.append(new_bill.to_list_tile())
-                main_list_view.controls.append(new_bill.to_list_tile())
+                transactions.append(new_transaction)
+                transaction_rows.append(new_transaction.to_list_tile())
+                main_list_view.controls.append(new_transaction.to_list_tile())
 
                 page.update()
 
@@ -85,7 +85,7 @@ def main(page: ft.Page):
                 ))
 
         dialog = ft.AlertDialog(
-            title=ft.Text('New Bill'),
+            title=ft.Text('New Transaction'),
             content=ft.Column(
                 controls=[
                     ft.RadioGroup(
@@ -115,8 +115,8 @@ def main(page: ft.Page):
         page.open(dialog)
         page.update()
 
-    bills: List[Bill] = []
-    bill_rows: List[ft.ListTile] = []
+    transactions: List[Transaction] = []
+    transaction_rows: List[ft.ListTile] = []
 
     main_list_view = ft.ListView()
 
@@ -125,7 +125,7 @@ def main(page: ft.Page):
             controls=[
                 ft.Row(
                     controls=[
-                        ft.IconButton(icon=ft.icons.ADD, on_click=add_bill)
+                        ft.IconButton(icon=ft.icons.ADD, on_click=add_transaction)
                     ],
                     alignment=ft.MainAxisAlignment.END
                 ),
