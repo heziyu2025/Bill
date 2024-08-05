@@ -21,7 +21,7 @@ class Transaction:
         )
 
 
-def main_page(page: ft.Page):
+def bill_page(page: ft.Page):
     def add_transaction(e):
         income_types = ['Salary', 'Bonus', 'Interest', 'Stock', 'Rent']
         disburse_types = ['Rent']
@@ -118,16 +118,15 @@ def main_page(page: ft.Page):
 
     main_list_view = ft.ListView()
 
-    page.add(
-        ft.Column(
-            controls=[
-                ft.Row(
-                    controls=[
-                        ft.IconButton(icon=ft.icons.ADD, on_click=add_transaction)
-                    ],
-                    alignment=ft.MainAxisAlignment.END
-                ),
-                ft.Card(main_list_view)
-            ]
-        )
+    return ft.Column(
+        controls=[
+            ft.Row(
+                controls=[
+                    ft.IconButton(icon=ft.icons.ADD, on_click=add_transaction)
+                ],
+                alignment=ft.MainAxisAlignment.END,
+            ),
+            ft.Card(main_list_view),
+        ],
+        expand=True
     )
