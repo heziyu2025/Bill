@@ -46,6 +46,18 @@ def detail_page(page: ft.Page):
             allowed_chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '-']
             nonlocal amount
             amount.value = ''.join([char for char in e.data if char in allowed_chars])
+            while True:
+                if '.' in amount.value and len(amount.value.split('.')[1]) > 2:
+                    amount.value = amount.value[0:-1]
+                    continue
+
+                try:
+                    float(amount.value)
+                except:
+                    amount.value = amount.value[0:-1]
+                else:
+                    break
+
             page.update()
 
         amount = ft.TextField(
@@ -60,27 +72,18 @@ def detail_page(page: ft.Page):
 
         def confirm(e):
             page.close(dialog)
-            try:
-                new_transaction = Transaction(
-                    is_income=is_income,
-                    type_=type_dropdown.value,
-                    amount=float(amount.value),
-                    create_time=datetime.datetime.now()
-                )
+            new_transaction = Transaction(
+                is_income=is_income,
+                type_=type_dropdown.value,
+                amount=float(amount.value),
+                create_time=datetime.datetime.now()
+            )
 
-                transactions.append(new_transaction)
-                transaction_rows.append(new_transaction.to_list_tile())
-                main_list_view.controls.append(new_transaction.to_list_tile())
+            transactions.append(new_transaction)
+            transaction_rows.append(new_transaction.to_list_tile())
+            main_list_view.controls.append(new_transaction.to_list_tile())
 
-                page.update()
-
-            except:
-                page.open(ft.AlertDialog(
-                    bgcolor=ft.colors.RED_ACCENT,
-                    icon=ft.Icon(ft.icons.ERROR),
-                    title=ft.Text('Error'),
-                    content=ft.Text('Please enter valid amount.')
-                ))
+            page.update()
 
         dialog = ft.AlertDialog(
             title=ft.Text('New Transaction'),
