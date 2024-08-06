@@ -21,7 +21,7 @@ class Transaction:
         )
 
 
-def bill_page(page: ft.Page):
+def detail_page(page: ft.Page):
     def add_transaction(e):
         income_types = ['Salary', 'Bonus', 'Interest', 'Stock', 'Rent']
         disburse_types = ['Rent']

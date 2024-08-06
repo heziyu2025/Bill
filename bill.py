@@ -1,13 +1,19 @@
 import flet as ft
 
-from bill_page import bill_page
+from detail_page import detail_page
 from chart_page import chart_page
 
 
 def main(page: ft.Page):
     page.title = "Bill"
 
-    right_pages = [bill_page, chart_page]
+    page.appbar = ft.AppBar(
+        leading=ft.Icon(ft.icons.ATTACH_MONEY),
+        bgcolor=ft.colors.SURFACE_VARIANT,
+        title=ft.Text('Bill'),
+    )
+
+    right_pages = [detail_page, chart_page]
 
     def switch(e):
         nonlocal main_row
@@ -20,7 +26,7 @@ def main(page: ft.Page):
         destinations=[
             ft.NavigationRailDestination(
                 icon=ft.icons.LIST,
-                label='Bill',
+                label='Detail',
             ),
             ft.NavigationRailDestination(
                 icon=ft.icons.BAR_CHART,
