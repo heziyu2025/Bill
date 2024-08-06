@@ -15,13 +15,24 @@ class Transaction:
         icon_type = ft.icons.ARROW_UPWARD if self.is_income else ft.icons.ARROW_DOWNWARD
         return ft.ListTile(
             leading=ft.Icon(icon_type),
-            title=ft.Text(str(self.amount)),
-            subtitle=ft.Text(self.type_),
-            trailing=ft.Text(self.create_time.strftime('%Y-%m-%d %H:%M:%S'))
+            title=ft.Text(str(self.amount), expand=True),
+            subtitle=ft.Text(self.type_, expand=True),
+            trailing=ft.Row(
+                [
+                    ft.Text(self.create_time.strftime('%Y-%m-%d %H:%M:%S')),
+                    ft.PopupMenuButton(
+                        items=[
+                            ft.PopupMenuItem('Delete', icon=ft.icons.DELETE)
+                        ]
+                    )
+                ],
+                alignment=ft.MainAxisAlignment.END
+            ),
+            expand=True
         )
 
 
-def detail_page(page: ft.Page):
+def detail_view(page: ft.Page):
     def add_transaction(e):
         income_types = ['Salary', 'Bonus', 'Interest', 'Stock', 'Rent']
         disburse_types = ['Rent']
@@ -80,7 +91,7 @@ def detail_page(page: ft.Page):
             )
 
             transactions.append(new_transaction)
-            transaction_rows.append(new_transaction.to_list_tile())
+            transaction_list_tiles.append(new_transaction.to_list_tile())
             main_list_view.controls.append(new_transaction.to_list_tile())
 
             page.update()
@@ -117,7 +128,7 @@ def detail_page(page: ft.Page):
         page.update()
 
     transactions: List[Transaction] = []
-    transaction_rows: List[ft.ListTile] = []
+    transaction_list_tiles: List[ft.ListTile] = []
 
     main_list_view = ft.ListView()
 

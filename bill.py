@@ -1,7 +1,7 @@
 import flet as ft
 
-from detail_page import detail_page
-from chart_page import chart_page
+from detail_view import detail_view
+from chart_view import chart_view
 
 
 def main(page: ft.Page):
@@ -13,11 +13,11 @@ def main(page: ft.Page):
         title=ft.Text('Bill'),
     )
 
-    right_pages = [detail_page, chart_page]
+    main_views = [detail_view, chart_view]
 
     def switch(e):
         nonlocal main_row
-        main_row.controls[2] = right_pages[e.control.selected_index](page)
+        main_row.controls[2] = main_views[e.control.selected_index](page)
         page.update()
 
     rail = ft.NavigationRail(
@@ -39,7 +39,7 @@ def main(page: ft.Page):
         controls=[
             rail,
             ft.VerticalDivider(),
-            right_pages[0](page)
+            main_views[0](page)
         ],
         expand=True,
     )
