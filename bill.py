@@ -1,7 +1,10 @@
+from typing import List
+
 import flet as ft
 
 from detail_view import detail_view
 from chart_view import chart_view
+from transaction import Transaction
 
 
 def main(page: ft.Page):
@@ -13,11 +16,14 @@ def main(page: ft.Page):
         title=ft.Text('Bill'),
     )
 
+    transactions: List[Transaction] = []
+    transaction_list_tiles: List[ft.ListTile] = []
+
     main_views = [detail_view, chart_view]
 
     def switch(e):
         nonlocal main_row
-        main_row.controls[2] = main_views[e.control.selected_index](page)
+        main_row.controls[2] = main_views[e.control.selected_index](page, transactions, transaction_list_tiles)
         page.update()
 
     rail = ft.NavigationRail(
@@ -39,7 +45,7 @@ def main(page: ft.Page):
         controls=[
             rail,
             ft.VerticalDivider(),
-            main_views[0](page)
+            main_views[0](page, transactions, transaction_list_tiles)
         ],
         expand=True,
     )

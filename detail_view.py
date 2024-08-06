@@ -1,38 +1,13 @@
 import datetime
 from typing import List
-
 import flet as ft
 
-
-class Transaction:
-    def __init__(self, is_income: bool, type_: str, amount: float, create_time: datetime):
-        self.is_income = is_income
-        self.type_ = type_
-        self.amount = amount
-        self.create_time = create_time
-
-    def to_list_tile(self):
-        icon_type = ft.icons.ARROW_UPWARD if self.is_income else ft.icons.ARROW_DOWNWARD
-        return ft.ListTile(
-            leading=ft.Icon(icon_type),
-            title=ft.Text(str(self.amount), expand=True),
-            subtitle=ft.Text(self.type_, expand=True),
-            trailing=ft.Row(
-                [
-                    ft.Text(self.create_time.strftime('%Y-%m-%d %H:%M:%S')),
-                    ft.PopupMenuButton(
-                        items=[
-                            ft.PopupMenuItem('Delete', icon=ft.icons.DELETE)
-                        ]
-                    )
-                ],
-                alignment=ft.MainAxisAlignment.END
-            ),
-            expand=True
-        )
+from transaction import Transaction
 
 
-def detail_view(page: ft.Page):
+def detail_view(page: ft.Page,
+                transactions: List[Transaction],
+                transaction_list_tiles: List[ft.ListTile]):
     def add_transaction(e):
         income_types = ['Salary', 'Bonus', 'Interest', 'Stock', 'Rent']
         disburse_types = ['Rent']
@@ -47,7 +22,7 @@ def detail_view(page: ft.Page):
         def switch(e):
             nonlocal type_dropdown
             nonlocal is_income
-            is_income = 1 - is_income
+            is_income = not is_income
             types_list = income_types if e.data == 'income' else disburse_types
             type_dropdown.value = types_list[0]
             type_dropdown.options = [ft.dropdown.Option(type_i) for type_i in types_list]
@@ -92,7 +67,6 @@ def detail_view(page: ft.Page):
 
             transactions.append(new_transaction)
             transaction_list_tiles.append(new_transaction.to_list_tile())
-            main_list_view.controls.append(new_transaction.to_list_tile())
 
             page.update()
 
@@ -127,10 +101,7 @@ def detail_view(page: ft.Page):
         page.open(dialog)
         page.update()
 
-    transactions: List[Transaction] = []
-    transaction_list_tiles: List[ft.ListTile] = []
-
-    main_list_view = ft.ListView()
+    main_list_view = ft.ListView(transaction_list_tiles)
 
     return ft.Column(
         controls=[
