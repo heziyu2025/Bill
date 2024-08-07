@@ -59,6 +59,7 @@ def detail_view(page: ft.Page,
         def confirm(e):
             page.close(dialog)
             new_transaction = Transaction(
+                index=len(transactions),
                 is_income=is_income,
                 type_=type_dropdown.value,
                 amount=float(amount.value),
