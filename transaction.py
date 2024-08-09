@@ -14,17 +14,18 @@ class Transaction:
         icon_type = ft.icons.ARROW_UPWARD if self.is_income else ft.icons.ARROW_DOWNWARD
         return ft.ListTile(
             leading=ft.Icon(icon_type),
-            title=ft.Text(str(self.amount)),
-            subtitle=ft.Text(self.type_),
-            trailing=ft.Row(
-                [
-                    ft.Text(self.create_time.strftime('%Y-%m-%d %H:%M:%S')),
-                    ft.PopupMenuButton(
-                        items=[
-                            ft.PopupMenuItem('Delete', icon=ft.icons.DELETE)
-                        ]
-                    )
-                ],
-                alignment=ft.MainAxisAlignment.END
+            title=ft.Text(
+                str(self.amount),
+                no_wrap=True,
+                width=200
+            ),
+            subtitle=ft.Text(
+                self.type_,
+                width=200
+            ),
+            trailing=ft.PopupMenuButton(
+                items=[
+                    ft.PopupMenuItem('Delete', icon=ft.icons.DELETE)
+                ]
             )
         )
