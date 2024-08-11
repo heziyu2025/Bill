@@ -67,8 +67,7 @@ def detail_view(page: ft.Page,
                 create_time=datetime.datetime.now()
             )
 
-            last = transactions[-1].create_time.strftime('%y.%m.%d') if len(transactions) != 0 else None
-            add_transaction_to_view(new_transaction, main_layout, last)
+            add_transaction_to_view(new_transaction, main_layout, transactions[-1])
             transactions.append(new_transaction)
 
             with open('bill.pkl', 'wb') as f:
@@ -111,7 +110,7 @@ def detail_view(page: ft.Page,
     last = None
     for transaction in transactions:
         add_transaction_to_view(transaction, main_layout, last)
-        last = transaction.create_time.strftime('%y.%m.%d')
+        last = transaction
 
     return ft.Column(
         controls=[
