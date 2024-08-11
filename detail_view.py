@@ -67,7 +67,10 @@ def detail_view(page: ft.Page,
                 create_time=datetime.datetime.now()
             )
 
-            add_transaction_to_view(new_transaction, main_layout, transactions[-1])
+            if len(transactions) == 0:
+                add_transaction_to_view(new_transaction, main_layout)
+            else:
+                add_transaction_to_view(new_transaction, main_layout, transactions[-1])
             transactions.append(new_transaction)
 
             with open('bill.pkl', 'wb') as f:
