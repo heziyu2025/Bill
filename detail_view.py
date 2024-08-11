@@ -3,11 +3,11 @@ from typing import List
 import flet as ft
 
 from transaction import Transaction
+from utils import add_transaction_to_view
 
 
 def detail_view(page: ft.Page,
-                transactions: List[Transaction],
-                transaction_list_tiles: List[ft.ListTile]):
+                transactions: List[Transaction]):
     def add_transaction(e):
         income_types = ['Salary', 'Bonus', 'Interest', 'Stock', 'Rent']
         disburse_types = ['Rent']
@@ -65,9 +65,8 @@ def detail_view(page: ft.Page,
                 amount=float(amount.value),
                 create_time=datetime.datetime.now()
             )
-
+            add_transaction_to_view(new_transaction, main_layout, transactions[-1].create_time.strftime('%y%m%d'))
             transactions.append(new_transaction)
-            transaction_list_tiles.append(new_transaction.to_list_tile())
 
             page.update()
 
@@ -102,7 +101,11 @@ def detail_view(page: ft.Page,
         page.open(dialog)
         page.update()
 
-    main_list_view = ft.ListView(transaction_list_tiles)
+    main_layout = ft.Column()
+    last = None
+    for transaction in transactions:
+        add_transaction_to_view(transaction, main_layout, last)
+        last = transaction.create_time.strftime('%y%m%d')
 
     return ft.Column(
         controls=[
@@ -112,7 +115,7 @@ def detail_view(page: ft.Page,
                 ],
                 alignment=ft.MainAxisAlignment.END,
             ),
-            ft.Card(main_list_view),
+            main_layout,
         ],
         expand=True
     )

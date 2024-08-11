@@ -17,13 +17,12 @@ def main(page: ft.Page):
     )
 
     transactions: List[Transaction] = []
-    transaction_list_tiles: List[ft.ListTile] = []
 
     main_views = [detail_view, chart_view]
 
     def switch(e):
         nonlocal main_row
-        main_row.controls[2] = main_views[e.control.selected_index](page, transactions, transaction_list_tiles)
+        main_row.controls[2] = main_views[e.control.selected_index](page, transactions)
         page.update()
 
     rail = ft.NavigationRail(
@@ -45,7 +44,7 @@ def main(page: ft.Page):
         controls=[
             rail,
             ft.VerticalDivider(),
-            main_views[0](page, transactions, transaction_list_tiles)
+            main_views[0](page, transactions)
         ],
         expand=True,
     )
