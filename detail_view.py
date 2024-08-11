@@ -65,7 +65,9 @@ def detail_view(page: ft.Page,
                 amount=float(amount.value),
                 create_time=datetime.datetime.now()
             )
-            add_transaction_to_view(new_transaction, main_layout, transactions[-1].create_time.strftime('%y%m%d'))
+
+            last = transactions[-1].create_time.strftime('%y%m%d') if len(transactions) != 0 else None
+            add_transaction_to_view(new_transaction, main_layout, last)
             transactions.append(new_transaction)
 
             page.update()
