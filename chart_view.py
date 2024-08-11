@@ -8,36 +8,48 @@ from transaction import Transaction
 from flet.matplotlib_chart import MatplotlibChart
 
 def chart_view(page: ft.Page,
-               transactions: List[Transaction],
-               transaction_list_tiles: List[ft.ListTile]):
+               transactions: List[Transaction]):
+    class State:
+        toggle = True
+
+    s = State()
 
     fig, axs = plt.subplots(2, 1)
     axs[0].set_xlabel("time")
     axs[0].set_ylabel("Income")
     axs[1].set_ylabel("Consumption")
-
-    # 分别提取收入和支出的 amounts 和 create_time
+    # 提取收入的 amounts 和 create_time
     income_transactions = [(transaction.amount, transaction.create_time.date())
                            for transaction in transactions if transaction.is_income]
-    print(income_transactions)
 
-    expense_transactions = [(transaction.amount, transaction.create_time.date())
-                            for transaction in transactions if not transaction.is_income]
-    print(expense_transactions)
+    # 将 income_transactions 转换为 LineChartDataPoint 列表
+    data_points = [
+        ft.LineChartDataPoint(float(transaction[1].toordinal()), transaction[0])
+        for transaction in income_transactions
+    ]
 
-    fig, axs = plt.subplots(2, 1)
-    axs[0].plot(income_transactions)
-    axs[0].set_xlabel("time")
-    axs[0].set_ylabel("Income")
-    axs[0].grid(True)
+    data_1 = [
+        ft.LineChartData(
+            data_points=data_points,
+            stroke_width=5,
+            color=ft.colors.CYAN,
+            curved=True,
+            stroke_cap_round=True,
+        )
+    ]
 
-    axs[1].plot(expense_transactions)
-    axs[1].set_xlabel("time")
-    axs[1].set_ylabel("Consumption")
-    axs[1].grid(True)
+    def toggle_data(e):
+        chart.data_series = data_1
+        chart.interactive = True
+        s.toggle = not s.toggle
+        chart.update()
 
-    fig.tight_layout()
-
-    page.add(MatplotlibChart(fig, expand=True))
+    # 例如：
+    chart = ft.LineChart(
+        lines=data_1,
+        min_x=0,
+        min_y=0,
+    )
+    page.add(ft.ElevatedButton("avg", on_click=toggle_data), chart)
 
     return ft.Text('1月~6月')
