@@ -66,7 +66,7 @@ def detail_view(page: ft.Page,
                 create_time=datetime.datetime.now()
             )
 
-            last = transactions[-1].create_time.strftime('%y%m%d') if len(transactions) != 0 else None
+            last = transactions[-1].create_time.strftime('%y.%m.%d') if len(transactions) != 0 else None
             add_transaction_to_view(new_transaction, main_layout, last)
             transactions.append(new_transaction)
 

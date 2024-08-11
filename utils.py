@@ -23,9 +23,9 @@ def add_transaction_to_view(transaction: Transaction, layout: ft.Column, last_da
                )
            )
         else:
-            layout.controls[0].content.controls.insert(0, transaction.to_list_tile())
+            layout.controls[0].content.controls.insert(1, transaction.to_list_tile())
     else:
-        layout.controls.insert(0,
+        layout.controls.append(
            ft.Card(
                ft.Column(
                    [
