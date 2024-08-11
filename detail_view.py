@@ -107,7 +107,7 @@ def detail_view(page: ft.Page,
     last = None
     for transaction in transactions:
         add_transaction_to_view(transaction, main_layout, last)
-        last = transaction.create_time.strftime('%y%m%d')
+        last = transaction.create_time.strftime('%y.%m.%d')
 
     return ft.Column(
         controls=[
