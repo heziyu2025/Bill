@@ -1,3 +1,4 @@
+import pickle
 from typing import List
 
 import flet as ft
@@ -16,7 +17,11 @@ def main(page: ft.Page):
         title=ft.Text('Bill'),
     )
 
-    transactions: List[Transaction] = []
+    try:
+        with open('bill.pkl', 'rb') as f:
+            transactions: List[Transaction] = pickle.load(f)
+    except:
+        transactions: List[Transaction] = []
 
     main_views = [detail_view, chart_view]
 

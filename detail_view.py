@@ -1,4 +1,5 @@
 import datetime
+import pickle
 from typing import List
 import flet as ft
 
@@ -69,6 +70,9 @@ def detail_view(page: ft.Page,
             last = transactions[-1].create_time.strftime('%y.%m.%d') if len(transactions) != 0 else None
             add_transaction_to_view(new_transaction, main_layout, last)
             transactions.append(new_transaction)
+
+            with open('bill.pkl', 'wb') as f:
+                pickle.dump(transactions, f)
 
             page.update()
 
